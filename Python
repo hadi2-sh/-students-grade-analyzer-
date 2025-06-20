@@ -1,0 +1,45 @@
+def display_student_summary(students, grades, index=0):
+    """Recursively prints students' names and grades."""
+    if index < len(students):
+        print(f"{students[index]}: {grades[index]}")
+        display_student_summary(students, grades, index + 1)
+
+def get_avg_grade(grades):
+    """Returns the average grade of the class."""
+    return sum(grades) / len(grades) if grades else 0
+
+def get_highest_grade(students, grades, index=0, max_index=0):
+    """Recursively finds the highest grade and the corresponding student."""
+    if index < len(grades):
+        if grades[index] > grades[max_index]:
+            max_index = index
+        return get_highest_grade(students, grades, index + 1, max_index)
+    return students[max_index], grades[max_index]
+
+def count_passed(grades, index=0):
+    """Recursively counts the number of students who passed (grade >= 60)."""
+    if index >= len(grades):
+        return 0
+    return (1 if grades[index] >= 60 else 0) + count_passed(grades, index + 1)
+
+
+num_students = int(input("Enter the number of students: "))
+students = []
+grades = []
+
+
+for _ in range(num_students):
+    name = input("Enter student name: ")
+    grade = int(input(f"Enter grade for {name}: "))
+    students.append(name)
+    grades.append(grade)
+
+
+print("\nStudent Grades:")
+display_student_summary(students, grades)
+
+
+print(f"\nAverage Grade: {get_avg_grade(grades):.2f}")
+top_student, top_grade = get_highest_grade(students, grades)
+print(f"Highest Grade: {top_student} with {top_grade}")
+print(f"Number of Students Passed: {count_passed(grades)}")
